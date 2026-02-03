@@ -16,7 +16,6 @@ index.html
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
     }
 
     .card {
@@ -25,8 +24,9 @@ index.html
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      width: 330px;
+      width: 320px;
       position: relative;
+      overflow: hidden; /* 🔒 empêche le Non de sortir */
     }
 
     h1 {
@@ -51,6 +51,8 @@ index.html
     #no {
       background-color: #ccc;
       position: absolute;
+      left: 160px;
+      top: 180px;
       transition: all 0.15s ease;
     }
 
@@ -63,7 +65,7 @@ index.html
 </head>
 <body>
 
-  <div class="card">
+  <div class="card" id="card">
     <h1>Shanna 💕</h1>
     <p>Veux-tu être ma Valentine le <strong>14 février</strong> ? 💘</p>
 
@@ -74,6 +76,7 @@ index.html
   </div>
 
   <script>
+    const card = document.getElementById("card");
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
     const message = document.getElementById("message");
@@ -82,43 +85,51 @@ index.html
       "Non 🙃",
       "Raté 😅",
       "Presque 😏",
-      "Encore non 😈",
-      "Impossible 😜",
-      "Essaye encore 😂"
+      "Toujours pas 😈",
+      "Nope 😜",
+      "Essaie encore 😂"
     ];
 
     function escapeNo() {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 80);
-      const scale = Math.random() * 0.4 + 0.5;
+      const cardRect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = cardRect.width - btnRect.width - 10;
+      const maxY = cardRect.height - btnRect.height - 10;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      const scale = Math.random() * 0.3 + 0.6;
 
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
       noBtn.style.transform = `scale(${scale})`;
 
-      const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
-      noBtn.innerText = randomText;
+      noBtn.innerText =
+        noTexts[Math.floor(Math.random() * noTexts.length)];
     }
 
-    // Souris
+    // Desktop
     noBtn.addEventListener("mouseover", escapeNo);
 
-    // Mobile (iPhone)
+    // iPhone / tactile
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
       escapeNo();
     }, { passive: false });
 
-    // Si jamais elle arrive à cliquer 😅
+    // Si jamais cliqué
     noBtn.addEventListener("click", escapeNo);
 
     // Clic sur OUI
     yesBtn.addEventListener("click", () => {
-      message.innerHTML = "Yesss 💕💍 J’ai hâte de passer la Saint-Valentin avec toi 😘";
+      message.innerHTML =
+        "Yesss 💕 J’ai hâte de passer la Saint-Valentin avec toi ";
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
     });
   </script>
-  
+
 </body>
 </html>
+
