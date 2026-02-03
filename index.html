@@ -5,6 +5,7 @@ index.html
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shanna 💖</title>
   <style>
     body {
@@ -15,6 +16,7 @@ index.html
       align-items: center;
       justify-content: center;
       margin: 0;
+      overflow: hidden;
     }
 
     .card {
@@ -27,17 +29,16 @@ index.html
       position: relative;
     }
 
-    h1 {
-      color: #ff4d6d;
-    }
+    h1 { color: #ff4d6d; margin-top: 0; }
 
-    button {
+    button, a {
       padding: 12px 20px;
       font-size: 16px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       margin: 10px;
+      display: inline-block;
     }
 
     #yes {
@@ -48,17 +49,20 @@ index.html
     #no {
       background-color: #ccc;
       position: absolute;
+      left: 170px;
+      top: 155px;
     }
 
     #playMusic {
       display: none;
       background-color: #ff4d6d;
       color: white;
-      margin-top: 20px;
+      text-decoration: none;
+      margin-top: 12px;
     }
 
     #message {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 18px;
       color: #ff4d6d;
     }
@@ -75,18 +79,11 @@ index.html
 
     <div id="message"></div>
 
-    <button id="playMusic">🎵 Lancer notre musique</button>
+    <!-- Bouton musique (ouvre YouTube sur iPhone) -->
+    <a id="playMusic" target="_blank" rel="noopener">
+      🎵 Lance notre musique
+    </a>
   </div>
-
-  <!-- Lecteur YouTube caché -->
-  <iframe
-    id="music"
-    width="0"
-    height="0"
-    src=""
-    frameborder="0"
-    allow="autoplay">
-  </iframe>
 
   <script>
     const noBtn = document.getElementById("no");
@@ -94,13 +91,21 @@ index.html
     const message = document.getElementById("message");
     const playBtn = document.getElementById("playMusic");
 
-    // Le bouton "Non" s'échappe
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
+    // "Non" fuit (iPhone: on gère aussi le touch)
+    function moveNoButton() {
+      const maxX = window.innerWidth - 120;
+      const maxY = window.innerHeight - 80;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
-    });
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
 
     // Clic sur "Oui"
     yesBtn.addEventListener("click", () => {
@@ -108,15 +113,9 @@ index.html
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
 
-      // Affiche le bouton musique
+      // Affiche le bouton musique + lien YouTube (fiable sur iPhone)
       playBtn.style.display = "inline-block";
-    });
-
-    // Lancer la musique après un vrai clic
-    playBtn.addEventListener("click", () => {
-      document.getElementById("music").src =
-        "https://www.youtube.com/embed/i42d7L7MzvM?autoplay=1&rel=0";
-      playBtn.style.display = "none";
+      playBtn.href = "https://www.youtube.com/watch?v=i42d7L7MzvM";
     });
   </script>
 
