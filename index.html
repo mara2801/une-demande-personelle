@@ -7,22 +7,7 @@ index.html
   <meta charset="UTF-8">
   <title>Shanna 💖</title>
   <style>
-    <iframe id="music"
-  width="0"
-  height="0"
-  src=""
-  frameborder="0"
-  allow="autoplay">
-</iframe>
-<iframe
-  id="music"
-  width="0"
-  height="0"
-  src=""
-  frameborder="0"
-  allow="autoplay">
-</iframe>
-body {
+    body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       height: 100vh;
@@ -39,6 +24,7 @@ body {
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       width: 320px;
+      position: relative;
     }
 
     h1 {
@@ -64,6 +50,13 @@ body {
       position: absolute;
     }
 
+    #playMusic {
+      display: none;
+      background-color: #ff4d6d;
+      color: white;
+      margin-top: 20px;
+    }
+
     #message {
       margin-top: 20px;
       font-size: 18px;
@@ -81,13 +74,27 @@ body {
     <button id="no">Non 🙃</button>
 
     <div id="message"></div>
+
+    <button id="playMusic">🎵 Lancer notre musique</button>
   </div>
+
+  <!-- Lecteur YouTube caché -->
+  <iframe
+    id="music"
+    width="0"
+    height="0"
+    src=""
+    frameborder="0"
+    allow="autoplay">
+  </iframe>
 
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
     const message = document.getElementById("message");
+    const playBtn = document.getElementById("playMusic");
 
+    // Le bouton "Non" s'échappe
     noBtn.addEventListener("mouseover", () => {
       const x = Math.random() * (window.innerWidth - 100);
       const y = Math.random() * (window.innerHeight - 50);
@@ -95,17 +102,22 @@ body {
       noBtn.style.top = y + "px";
     });
 
+    // Clic sur "Oui"
     yesBtn.addEventListener("click", () => {
-  message.innerHTML = "Yesss 💕💍 J’ai hâte de passer la Saint-Valentin avec toi 😘";
-  noBtn.style.display = "none";
-  yesBtn.style.display = "none";
+      message.innerHTML = "Yesss 💕 J’ai hâte de passer la Saint-Valentin avec toi ";
+      noBtn.style.display = "none";
+      yesBtn.style.display = "none";
 
-  document.getElementById("music").src =
-  "https://www.youtube.com/embed/i42d7L7MzvM?autoplay=1&rel=0";
+      // Affiche le bouton musique
+      playBtn.style.display = "inline-block";
+    });
 
-
-});
-
+    // Lancer la musique après un vrai clic
+    playBtn.addEventListener("click", () => {
+      document.getElementById("music").src =
+        "https://www.youtube.com/embed/i42d7L7MzvM?autoplay=1&rel=0";
+      playBtn.style.display = "none";
+    });
   </script>
 
 </body>
