@@ -12,10 +12,10 @@ index.html
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       height: 100vh;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0;
       overflow: hidden;
     }
 
@@ -25,20 +25,22 @@ index.html
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      width: 320px;
+      width: 330px;
       position: relative;
     }
 
-    h1 { color: #ff4d6d; margin-top: 0; }
+    h1 {
+      color: #ff4d6d;
+      margin-top: 0;
+    }
 
-    button, a {
+    button {
       padding: 12px 20px;
       font-size: 16px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       margin: 10px;
-      display: inline-block;
     }
 
     #yes {
@@ -49,20 +51,11 @@ index.html
     #no {
       background-color: #ccc;
       position: absolute;
-      left: 170px;
-      top: 155px;
-    }
-
-    #playMusic {
-      display: none;
-      background-color: #ff4d6d;
-      color: white;
-      text-decoration: none;
-      margin-top: 12px;
+      transition: all 0.15s ease;
     }
 
     #message {
-      margin-top: 18px;
+      margin-top: 20px;
       font-size: 18px;
       color: #ff4d6d;
     }
@@ -78,44 +71,52 @@ index.html
     <button id="no">Non 🙃</button>
 
     <div id="message"></div>
-
-    <!-- Bouton musique (ouvre YouTube sur iPhone) -->
-    <a id="playMusic" target="_blank" rel="noopener">
-      🎵 Lance notre musique
-    </a>
   </div>
 
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
     const message = document.getElementById("message");
-    const playBtn = document.getElementById("playMusic");
 
-    // "Non" fuit (iPhone: on gère aussi le touch)
-    function moveNoButton() {
-      const maxX = window.innerWidth - 120;
-      const maxY = window.innerHeight - 80;
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+    const noTexts = [
+      "Non 🙃",
+      "Raté 😅",
+      "Presque 😏",
+      "Encore non 😈",
+      "Impossible 😜",
+      "Essaye encore 😂"
+    ];
+
+    function escapeNo() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 80);
+      const scale = Math.random() * 0.4 + 0.5;
+
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
+      noBtn.style.transform = `scale(${scale})`;
+
+      const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+      noBtn.innerText = randomText;
     }
 
-    noBtn.addEventListener("mouseover", moveNoButton);
+    // Souris
+    noBtn.addEventListener("mouseover", escapeNo);
+
+    // Mobile (iPhone)
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      moveNoButton();
+      escapeNo();
     }, { passive: false });
 
-    // Clic sur "Oui"
+    // Si jamais elle arrive à cliquer 😅
+    noBtn.addEventListener("click", escapeNo);
+
+    // Clic sur OUI
     yesBtn.addEventListener("click", () => {
-      message.innerHTML = "Yesss 💕 J’ai hâte de passer la Saint-Valentin avec toi ";
+      message.innerHTML = "Yesss 💕💍 J’ai hâte de passer la Saint-Valentin avec toi 😘";
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
-
-      // Affiche le bouton musique + lien YouTube (fiable sur iPhone)
-      playBtn.style.display = "inline-block";
-      playBtn.href = "https://www.youtube.com/watch?v=i42d7L7MzvM";
     });
   </script>
 
